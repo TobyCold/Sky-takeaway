@@ -10,6 +10,7 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
@@ -20,6 +21,7 @@ import com.sky.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
 
     /**
      * 员工登录
@@ -64,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * 员工存储
+     * 新增员工
      *
      * @param employeeDTO
      */
@@ -100,4 +103,51 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total, result);
     }
 
+    /**
+     * 启用/禁用 员工账号
+     * @param status
+     * @param id
+     */
+    public void setStatus(int status, long id) {
+        employeeMapper.setStatus(status, id);
+    }
+
+    /**
+     * 修改员工
+     * @param employeeDTO
+     */
+    public void updateEntity(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        employeeMapper.updateEntity(employee);
+    }
+
+    /**
+     * 修改账号密码
+     * @param passwordEditDTO
+     */
+    public void updatePassword(PasswordEditDTO passwordEditDTO) {
+        Employee employee = employeeMapper.getById(passwordEditDTO.getEmpId());
+        if (!employee.getPassword().equals(passwordEditDTO.getOldPassword())) {
+            throw new PasswordErrorException();
+        }
+        employee.setPassword(passwordEditDTO.getNewPassword());
+        employeeMapper.updateEntity(employee);
+    }
+
+    /**
+     * 根据id查询员工
+     * @return
+     */
+    public Employee getById(long id) {
+       return employeeMapper.getById(id);
+    }
+
+    /**
+     * 上传用户头像
+     * @param file
+     */
+    public void saveLogo(MultipartFile file) {
+
+    }
 }

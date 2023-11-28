@@ -7,6 +7,7 @@ import com.sky.result.PageResult;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -36,10 +37,10 @@ public interface EmployeeMapper {
      * 根据id查询员工
      * @param id
      * @return
+     * FIXME 这个方法业务层还没使用，后期用不到，删除！
      */
     @Select("select * from employee where id = #{id}")
     Employee getById(Long id);
-
 
     /**
      * 分页查询
@@ -47,4 +48,19 @@ public interface EmployeeMapper {
      * @return
      */
     Page<Employee> page(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * 启用/禁用 员工账号
+     * @param status
+     * @param id
+     * FIXME 这里可以写个动态sql 待优化！
+     */
+    @Update("update employee set status = #{status} where id = #{id}")
+    void setStatus(int status, long id);
+
+    /**
+     * 修改账号密码
+     * @param employee
+     */
+    void updateEntity(Employee employee);
 }
