@@ -1,6 +1,5 @@
 package com.sky.controller.admin;
 
-import cn.hutool.core.io.FileUtil;
 import com.sky.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

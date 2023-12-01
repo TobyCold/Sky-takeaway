@@ -51,6 +51,7 @@
             #{id}
         </foreach>
     </delete>
+<!--    TODO 这里有两个select 相同 需要优化 -->
     <select id="page" resultType="com.sky.entity.Setmeal">
         select * from setmeal
         <where>
