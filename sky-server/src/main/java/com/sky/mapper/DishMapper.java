@@ -24,9 +24,7 @@ public interface DishMapper {
     Page<Dish> page(Dish dish);
 
     @AutoFill(value = OperationType.INSERT)
-    @Insert("insert into dish(name, category_id, price, image, description, status, create_time, update_time, create_user, update_user)" +
-            " values" +
-            "(#{name},#{categoryId},#{price},#{image}, #{description},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})")
+
     void save(Dish dish);
 
     /**
