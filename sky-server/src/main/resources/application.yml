@@ -15,7 +15,11 @@ spring:
   servlet:
     multipart:
       max-file-size: 5000MB
-
+  redis:
+    host: ${sky.redis.host}
+#    password: ${sky.redis.password}
+    port: ${sky.redis.port}
+    database: ${sky.redis.database}
   output:
     ansi:
       enabled: always

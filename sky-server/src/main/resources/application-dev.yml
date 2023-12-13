@@ -7,5 +7,10 @@ sky:
     username: root
     password: 123456
   wechat:
-    appid: 	wxea092986a05d4f07
-    secret: 60059dc3120b2b22cf934b2c5cb4a74b
+    appid: wxea092986a05d4f07
+    secret: 55edf7e2985c34080bbc312a922291df
+  redis:
+    host: 49.235.118.160
+#    password:
+    port: 10086
+    database: 0

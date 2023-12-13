@@ -24,7 +24,7 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    public static final String WX_LOGIN = "https://api.weixin.qq.com/sns/jscode2session ";
+    public static final String WX_LOGIN = "https://api.weixin.qq.com/sns/jscode2session";
     @Autowired
     private WeChatProperties weChatProperties;
 
@@ -50,29 +50,30 @@ public class UserServiceImpl implements UserService {
         JSONObject jsonObject = JSON.parseObject(json);
         String openid = jsonObject.getString("openid");
         //判断openId是否为空，如果为空表示登陆失败，抛出业务异常
-        isTrue(openid).handleNull(null ,()->{
+        isTrue(openid).handleNull(() -> {}, () -> {
             throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
         });
 
         //判断是否为新用户
         User user = userMapper.getByOpenid(openid);
-        isTrue(user).handleNull(null, ()->{
+        isTrue(user).handleNull(() -> log.info("不是新用户"), () -> {
             User newUser = User.builder()
                     .openid(openid)
                     .createTime(LocalDateTime.now())
                     .build();
             userMapper.insert(newUser);
+            return newUser;
         });
         return user;
     }
 
     public static HandleNull isTrue(Object o) {
         return ((t, f) -> {
-            Optional<Object> object = Optional.of(o);
-            if (object.isPresent()) {
+//            Optional<Object> object = Optional.of(o);
+            if (o != null) {
                 t.run();
-            }else {
-                f.run();
+            } else {
+                f.get();
             }
         });
     }
